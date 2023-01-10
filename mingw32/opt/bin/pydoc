@@ -1,0 +1,5 @@
+#!/c/mingw640/i686-640-win32-sjlj-rt_v5-rev0/mingw32/opt/bin/python2.7.exe
+
+import pydoc
+if __name__ == '__main__':
+    pydoc.cli()
