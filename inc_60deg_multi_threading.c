@@ -310,8 +310,7 @@ void insert_layer(Film* film, VectorD* wls, VectorD* target_spec,
            best_insert_layer_num, best_insert_pos);
     Film_InsertLayer(film, best_insert_layer_num + 2, best_inserted_material,
                      d[best_insert_layer_num] - best_insert_pos, 1);
-    Film_InsertLayer(film, best_insert_layer_num + 2, insert_material, 0.001,
-                     1);
+    Film_InsertLayer(film, best_insert_layer_num + 2, insert_material, 0.00, 1);
     VectorD* vector_d_insert = VectorD_New(layer_number + 2);
     Film_GetOptParam(film, vector_d_insert);
     Film_SetOptParam(film,
@@ -518,7 +517,7 @@ int main() {
     HANDLE thread;
     void* p;
     VectorD* ratios = VectorD_New(RATIO_SIZE);
-    VectorD_Linspace(ratios, 1, 11);
+    VectorD_Linspace(ratios, 0, 2);
     VectorD_MulNumD(ratios, 1.888, ratios);
 
     // 必须给不同参数指定不同的地址，传入不同线程的函数
@@ -533,11 +532,9 @@ int main() {
     VectorD_Show(ratios);
 
     for (i = 0; i < RATIO_SIZE; i++) {
-        if (i < 15) {
-            p = &p_arr[i];
-            thread = CreateThread(NULL, 0, run, p, 0, NULL);
-            CloseHandle(thread);
-        }
+        p = &p_arr[i];
+        thread = CreateThread(NULL, 0, run, p, 0, NULL);
+        CloseHandle(thread);
     }
     // here 1e10 overflows: implicitly cast to int...
     Sleep(1e8);
