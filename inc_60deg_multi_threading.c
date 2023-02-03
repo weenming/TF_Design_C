@@ -513,7 +513,7 @@ DWORD WINAPI run(LPVOID args_ptr) {
 
 int main() {
     int i;
-    const int RATIO_SIZE = 40;
+    const int RATIO_SIZE = 200;
     HANDLE thread;
     void* p;
     VectorD* ratios = VectorD_New(RATIO_SIZE);
