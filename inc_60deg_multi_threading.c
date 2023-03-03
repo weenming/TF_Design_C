@@ -418,7 +418,7 @@ DWORD WINAPI run(LPVOID args_ptr) {
     Air = MaterialN_GetIMaterial(air);
     film = Film_New(0, 0.5, 1, 1);
     Film_AddLayer(film, Air, 0, 0);
-    Film_AddLayer(film, TiO2, init_thickness, 1);
+    Film_AddLayer(film, SiO2, init_thickness, 1);
 
     // 0 thickness means this layer is substrate
     Film_AddLayer(film, SiO2, 0, 0);
@@ -474,11 +474,11 @@ DWORD WINAPI run(LPVOID args_ptr) {
         // save to file: want to save inserted d
         d = VectorD_New(Film_GetOptSize(film));
         Film_GetOptParam(film, d);
-        sprintf(fpath, "./../result/tmp/run_%d/iter_%d", run_count, i);
+        sprintf(fpath, "./../result/30layers_SiO2/run_%d/iter_%d", run_count, i);
         VectorD_WriteToFile(d, fpath);
         printf("thread %d: %d-th iteration finished\n", run_count, i);
     }
-    sprintf(fpath, "./../result/tmp/run_%d/final", run_count);
+    sprintf(fpath, "./../result/30layers_SiO2/run_%d/final", run_count);
     VectorD_WriteToFile(d, fpath);
     // // update current designed spectrum
     // The bug should be caused by this problem: d_final is not given the value
@@ -518,8 +518,8 @@ int main() {
     void* p;
     VectorD* ratios = VectorD_New(RATIO_SIZE);
     VectorD_Linspace(ratios, 0, 2);
-    VectorD_MulNumD(ratios, 1.13, ratios); // TiO2 don't forget to change line 421!!!
-    // VectorD_MulNumD(ratios, 1.89, ratios); // SiO2 don't forget to change line 421!!!
+    // VectorD_MulNumD(ratios, 1.13, ratios); // TiO2 don't forget to change line 421!!!
+    VectorD_MulNumD(ratios, 1.89, ratios); // SiO2 don't forget to change line 421!!!
 
     // 必须给不同参数指定不同的地址，传入不同线程的函数
     // 初始化参数

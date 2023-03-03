@@ -414,7 +414,7 @@ DWORD WINAPI run(LPVOID args_ptr) {
         MaterialS_New(4.913, 0.2441 / 0.0803, -0.2441 / 0.0803, 0, 0.0803, 0);
     SiO2 = MaterialS_GetIMaterial(sio2);
     TiO2 = MaterialS_GetIMaterial(tio2);
-    printf("SiO2 at %x; TiO2 at %x\n", SiO2, TiO2);
+    printf("TiO2 at %x; TiO2 at %x\n", SiO2, TiO2);
     Air = MaterialN_GetIMaterial(air);
     film = Film_New(0, 0.5, 1, 1);
     Film_AddLayer(film, Air, 0, 0);
@@ -444,23 +444,23 @@ DWORD WINAPI run(LPVOID args_ptr) {
     // wavelengths of all sampling points
     wls = VectorD_New(sample_pts_num);
     VectorD_ReadFromFile(wls, "wl_60deg_R.txt");
-    sample_pts_num = File_Size("generaetd_spectrum-INC_ANG60.0-WLS500.0to1000.0-R_4layers.txt");
+    sample_pts_num = File_Size("spec_60deg_R.txt");
     target_spec = VectorD_New(sample_pts_num);
-    VectorD_ReadFromFile(target_spec, "generaetd_spectrum-INC_ANG60.0-WLS500.0to1000.0-R_4layers.txt");
+    VectorD_ReadFromFile(target_spec, "spec_60deg_R.txt");
 
-    insert_layer(film, wls, target_spec, TiO2, SiO2);
+    insert_layer(film, wls, target_spec, SiO2, TiO2);
     d = VectorD_New(Film_GetOptSize(film));
     Film_GetOptParam(film, d);
-    printf("\nthread%d: starting iteration\n", run_count);
     char fpath[200];
-    sprintf(fpath, "./../result/4layers_SiO2/run_%d/init", run_count);
+    sprintf(fpath, "./../result/30layers_TiO2/run_%d/init", run_count);
     VectorD_WriteToFile(d, fpath);
 
+    printf("\nthread%d: starting iteration\n", run_count);
     // start design, using needle optimization
     // 1st material argument: odd layer; 2nd material argument: even layer (the
     // layer at the top)
     int i;
-    
+
     for (i = 0; i < 50; i++) {
         d = VectorD_New(Film_GetOptSize(film));
         Film_GetOptParam(film, d);
@@ -473,16 +473,16 @@ DWORD WINAPI run(LPVOID args_ptr) {
         // VectorD_Show(d);
         delete_film(film);
         printf("thread %d: insertion start\n", run_count);
-        insert_layer(film, wls, target_spec, TiO2, SiO2);
+        insert_layer(film, wls, target_spec, SiO2, TiO2);
 
         // save to file: want to save inserted d
         d = VectorD_New(Film_GetOptSize(film));
         Film_GetOptParam(film, d);
-        sprintf(fpath, "./../result/4layers_SiO2/run_%d/iter_%d", run_count, i);
+        sprintf(fpath, "./../result/30layers_TiO2/run_%d/iter_%d", run_count, i);
         VectorD_WriteToFile(d, fpath);
         printf("thread %d: %d-th iteration finished\n", run_count, i);
     }
-    sprintf(fpath, "./../result/4layers_SiO2/run_%d/final", run_count);
+    sprintf(fpath, "./../result/30layers_TiO2/run_%d/final", run_count);
     VectorD_WriteToFile(d, fpath);
     // // update current designed spectrum
     // The bug should be caused by this problem: d_final is not given the value
@@ -522,8 +522,8 @@ int main() {
     void* p;
     VectorD* ratios = VectorD_New(RATIO_SIZE);
     VectorD_Linspace(ratios, 0, 2);
-    VectorD_MulNumD(ratios, 1.667, ratios); // SiO2
-    // VectorD_MulNumD(ratios, 1.00, ratios); // TiO2 don't forget to change the starting material
+    VectorD_MulNumD(ratios, 1.13, ratios); // TiO2 don't forget to change line 421!!!
+    // VectorD_MulNumD(ratios, 1.89, ratios); // SiO2 don't forget to change line 421!!!
 
     // 必须给不同参数指定不同的地址，传入不同线程的函数
     // 初始化参数
