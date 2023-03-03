@@ -418,7 +418,7 @@ DWORD WINAPI run(LPVOID args_ptr) {
     Air = MaterialN_GetIMaterial(air);
     film = Film_New(0, 0.5, 1, 1);
     Film_AddLayer(film, Air, 0, 0);
-    Film_AddLayer(film, SiO2, init_thickness, 1);
+    Film_AddLayer(film, TiO2, init_thickness, 1);
 
     // 0 thickness means this layer is substrate
     Film_AddLayer(film, SiO2, 0, 0);
@@ -513,12 +513,12 @@ DWORD WINAPI run(LPVOID args_ptr) {
 
 int main() {
     int i;
-    const int RATIO_SIZE = 40;
+    const int RATIO_SIZE = 200;
     HANDLE thread;
     void* p;
     VectorD* ratios = VectorD_New(RATIO_SIZE);
     VectorD_Linspace(ratios, 0, 2);
-    VectorD_MulNumD(ratios, 1.888, ratios);
+    VectorD_MulNumD(ratios, 1.13, ratios);
 
     // 必须给不同参数指定不同的地址，传入不同线程的函数
     // 初始化参数
