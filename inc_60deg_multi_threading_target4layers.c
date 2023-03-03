@@ -418,7 +418,7 @@ DWORD WINAPI run(LPVOID args_ptr) {
     Air = MaterialN_GetIMaterial(air);
     film = Film_New(0, 0.5, 1, 1);
     Film_AddLayer(film, Air, 0, 0);
-    Film_AddLayer(film, TiO2, init_thickness, 1);
+    Film_AddLayer(film, SiO2, init_thickness, 1);
 
     // 0 thickness means this layer is substrate
     Film_AddLayer(film, SiO2, 0, 0);
@@ -444,9 +444,9 @@ DWORD WINAPI run(LPVOID args_ptr) {
     // wavelengths of all sampling points
     wls = VectorD_New(sample_pts_num);
     VectorD_ReadFromFile(wls, "wl_60deg_R.txt");
-    sample_pts_num = File_Size("spec_60deg_R.txt");
+    sample_pts_num = File_Size("generaetd_spectrum-INC_ANG60.0-WLS500.0to1000.0-R_4layers.txt");
     target_spec = VectorD_New(sample_pts_num);
-    VectorD_ReadFromFile(target_spec, "spec_60deg_R.txt");
+    VectorD_ReadFromFile(target_spec, "generaetd_spectrum-INC_ANG60.0-WLS500.0to1000.0-R_4layers.txt");
 
     insert_layer(film, wls, target_spec, TiO2, SiO2);
     d = VectorD_New(Film_GetOptSize(film));
@@ -518,8 +518,8 @@ int main() {
     void* p;
     VectorD* ratios = VectorD_New(RATIO_SIZE);
     VectorD_Linspace(ratios, 0, 2);
-    VectorD_MulNumD(ratios, 1.13, ratios); // TiO2 don't forget to change line 421!!!
-    // VectorD_MulNumD(ratios, 1.89, ratios); // SiO2 don't forget to change line 421!!!
+    VectorD_MulNumD(ratios, 1.667, ratios); // SiO2
+    // VectorD_MulNumD(ratios, 1.00, ratios); // TiO2
 
     // 必须给不同参数指定不同的地址，传入不同线程的函数
     // 初始化参数
