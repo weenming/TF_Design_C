@@ -452,11 +452,15 @@ DWORD WINAPI run(LPVOID args_ptr) {
     d = VectorD_New(Film_GetOptSize(film));
     Film_GetOptParam(film, d);
     printf("\nthread%d: starting iteration\n", run_count);
+    char fpath[200];
+    sprintf(fpath, "./../result/30layers_SiO2_0to2/run_%d/init", run_count);
+    VectorD_WriteToFile(d, fpath);
+
     // start design, using needle optimization
     // 1st material argument: odd layer; 2nd material argument: even layer (the
     // layer at the top)
     int i;
-    char fpath[200];
+    
     for (i = 0; i < 50; i++) {
         d = VectorD_New(Film_GetOptSize(film));
         Film_GetOptParam(film, d);
@@ -474,11 +478,11 @@ DWORD WINAPI run(LPVOID args_ptr) {
         // save to file: want to save inserted d
         d = VectorD_New(Film_GetOptSize(film));
         Film_GetOptParam(film, d);
-        sprintf(fpath, "./../result/30layers_SiO2/run_%d/iter_%d", run_count, i);
+        sprintf(fpath, "./../result/30layers_SiO2_0to2/run_%d/iter_%d", run_count, i);
         VectorD_WriteToFile(d, fpath);
         printf("thread %d: %d-th iteration finished\n", run_count, i);
     }
-    sprintf(fpath, "./../result/30layers_SiO2/run_%d/final", run_count);
+    sprintf(fpath, "./../result/30layers_SiO2_0to2/run_%d/final", run_count);
     VectorD_WriteToFile(d, fpath);
     // // update current designed spectrum
     // The bug should be caused by this problem: d_final is not given the value
