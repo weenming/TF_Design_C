@@ -444,16 +444,16 @@ DWORD WINAPI run(LPVOID args_ptr) {
     // wavelengths of all sampling points
     wls = VectorD_New(sample_pts_num);
     VectorD_ReadFromFile(wls, "wl_60deg_R.txt");
-    sample_pts_num = File_Size("generaetd_spectrum-INC_ANG60.0-WLS500.0to1000.0-R_4layers.txt");
+    sample_pts_num = File_Size("generaetd_spectrum-INC_ANG60.0-WLS500.0to1000.0-R_4layers_seed2.txt");
     target_spec = VectorD_New(sample_pts_num);
-    VectorD_ReadFromFile(target_spec, "generaetd_spectrum-INC_ANG60.0-WLS500.0to1000.0-R_4layers.txt");
+    VectorD_ReadFromFile(target_spec, "generaetd_spectrum-INC_ANG60.0-WLS500.0to1000.0-R_4layers_seed2.txt");
 
     insert_layer(film, wls, target_spec, SiO2, TiO2);
     d = VectorD_New(Film_GetOptSize(film));
     Film_GetOptParam(film, d);
     printf("\nthread%d: starting iteration\n", run_count);
     char fpath[200];
-    sprintf(fpath, "./../result/4layers_TiO2_2to4/run_%d/init", run_count);
+    sprintf(fpath, "./../result/4layers_TiO2_0to2_seed3/run_%d/init", run_count);
     VectorD_WriteToFile(d, fpath);
     
     // start design, using needle optimization
@@ -478,11 +478,11 @@ DWORD WINAPI run(LPVOID args_ptr) {
         // save to file: want to save inserted d
         d = VectorD_New(Film_GetOptSize(film));
         Film_GetOptParam(film, d);
-        sprintf(fpath, "./../result/4layers_TiO2_2to4/run_%d/iter_%d", run_count, i);
+        sprintf(fpath, "./../result/4layers_TiO2_0to2_seed3/run_%d/iter_%d", run_count, i);
         VectorD_WriteToFile(d, fpath);
         printf("thread %d: %d-th iteration finished\n", run_count, i);
     }
-    sprintf(fpath, "./../result/4layers_TiO2_2to4/run_%d/final", run_count);
+    sprintf(fpath, "./../result/4layers_TiO2_0to2_seed3/run_%d/final", run_count);
     VectorD_WriteToFile(d, fpath);
     // // update current designed spectrum
     // The bug should be caused by this problem: d_final is not given the value
