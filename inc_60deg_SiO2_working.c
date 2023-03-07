@@ -444,16 +444,16 @@ DWORD WINAPI run(LPVOID args_ptr) {
     // wavelengths of all sampling points
     wls = VectorD_New(sample_pts_num);
     VectorD_ReadFromFile(wls, "wl_60deg_R.txt");
-    sample_pts_num = File_Size("generaetd_spectrum-INC_ANG60.0-WLS500.0to1000.0-R_4layers_seed2.txt");
+    sample_pts_num = File_Size("generaetd_spectrum-INC_ANG60.0-WLS500.0to1000.0-R_3layers_seed3.txt");
     target_spec = VectorD_New(sample_pts_num);
-    VectorD_ReadFromFile(target_spec, "generaetd_spectrum-INC_ANG60.0-WLS500.0to1000.0-R_4layers_seed2.txt");
+    VectorD_ReadFromFile(target_spec, "generaetd_spectrum-INC_ANG60.0-WLS500.0to1000.0-R_3layers_seed3.txt");
 
     insert_layer(film, wls, target_spec, TiO2, SiO2);
     d = VectorD_New(Film_GetOptSize(film));
     Film_GetOptParam(film, d);
     printf("\nthread%d: starting iteration\n", run_count);
     char fpath[200];
-    sprintf(fpath, "./../result/4layers_SiO2_0to2_seed3/run_%d/init", run_count);
+    sprintf(fpath, "./../result/3layers_SiO2_0to2_seed3/run_%d/init", run_count);
     VectorD_WriteToFile(d, fpath);
 
     // start design, using needle optimization
@@ -478,11 +478,11 @@ DWORD WINAPI run(LPVOID args_ptr) {
         // save to file: want to save inserted d
         d = VectorD_New(Film_GetOptSize(film));
         Film_GetOptParam(film, d);
-        sprintf(fpath, "./../result/4layers_SiO2_0to2_seed3/run_%d/iter_%d", run_count, i);
+        sprintf(fpath, "./../result/3layers_SiO2_0to2_seed3/run_%d/iter_%d", run_count, i);
         VectorD_WriteToFile(d, fpath);
         printf("thread %d: %d-th iteration finished\n", run_count, i);
     }
-    sprintf(fpath, "./../result/4layers_SiO2_0to2_seed3/run_%d/final", run_count);
+    sprintf(fpath, "./../result/3layers_SiO2_0to2_seed3/run_%d/final", run_count);
     VectorD_WriteToFile(d, fpath);
     // // update current designed spectrum
     // The bug should be caused by this problem: d_final is not given the value
@@ -522,8 +522,8 @@ int main() {
     void* p;
     VectorD* ratios = VectorD_New(RATIO_SIZE);
     VectorD_Linspace(ratios, 0, 2);
-    VectorD_MulNumD(ratios, 1.667, ratios); // SiO2
-    // VectorD_MulNumD(ratios, 1.00, ratios); // TiO2 don't forget to change the starting material
+    VectorD_MulNumD(ratios, 2.05, ratios); // SiO2
+    // VectorD_MulNumD(ratios, 1.23, ratios); // TiO2 don't forget to change the starting material
 
     // 必须给不同参数指定不同的地址，传入不同线程的函数
     // 初始化参数
